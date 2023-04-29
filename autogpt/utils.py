@@ -121,11 +121,13 @@ def get_latest_bulletin() -> str:
     exists = os.path.exists("CURRENT_BULLETIN.md")
     current_bulletin = ""
     if exists:
-        current_bulletin = open("CURRENT_BULLETIN.md", "r", encoding="utf-8").read()
+        with open("CURRENT_BULLETIN.md", "r", encoding="utf-8") as f:
+            current_bulletin = f.read()
     new_bulletin = get_bulletin_from_web()
     is_new_news = new_bulletin != current_bulletin
 
     if new_bulletin and is_new_news:
-        open("CURRENT_BULLETIN.md", "w", encoding="utf-8").write(new_bulletin)
+        with open("CURRENT_BULLETIN.md", "w", encoding="utf-8") as f:
+            f.write(new_bulletin)
         return f" {Fore.RED}::UPDATED:: {Fore.CYAN}{new_bulletin}{Fore.RESET}"
     return current_bulletin
